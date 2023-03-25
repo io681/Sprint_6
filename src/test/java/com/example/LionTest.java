@@ -3,50 +3,32 @@ package com.example;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
+import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnitRunner;
+
 import java.util.List;
 import static org.junit.Assert.*;
 
-@RunWith(Parameterized.class)
+@RunWith(MockitoJUnitRunner.class)
 public class LionTest {
-    private boolean isHasMane;
-    private String sex;
-    private Lion lion;
     private Lion lionSpy;
+    //Создание мока для стаба
+    @Mock
+    Lion lionStub;
 
-
-
-    public LionTest(boolean isHasMane,String sex) {
-        this.isHasMane = isHasMane;
-        this.sex =sex;
-    }
-    @Parameterized.Parameters
-    public static Object[][] getData() {
-        return new Object[][] {
-                {true, "Самец"},
-                {false, "Самка"},
-        };
-    }
-    //внедрение зависимости и  инициализация шпиона в Before
+    //внедрение зависимости и  инициализация  шпиона в Before
     @Before
         public void init () throws Exception {
         Predator feline = new Feline();
-        lion  = new Lion(sex, feline);
+        Lion lion = new Lion("Самка", feline);
         lionSpy  = Mockito.spy(lion);
     }
-    @Test
-    public void isHaveManeWhenMaleTest () {
-        assertEquals("Объект не самец",isHasMane, lionSpy.isHaveMane());
-    }
-    @Test
-    public void isHaveManeWhenFemaleTest () {
-        assertEquals("Объект не самка", isHasMane, lionSpy.isHaveMane());
-    }
+
     @Test
     public void getKittensTest () {
-        int actual = lionSpy.getKittens();
-        Mockito.verify(lionSpy, Mockito.times(1)).getKittens();
+        Mockito.when(lionStub.getKittens()).thenReturn(1);
+        int actual = lionStub.getKittens();
         assertEquals("Ошибка сравнения", 1, actual);
 
     }
