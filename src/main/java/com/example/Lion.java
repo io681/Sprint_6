@@ -3,16 +3,18 @@ package com.example;
 import java.util.List;
 
 public class Lion {
-
+    // добавлено поле типа интерфейса Predator для инъекции зависимости
+    protected Predator predator;
     boolean hasMane;
-
-    public Lion(String sex) throws Exception {
+    // добавлен параметр типа Predator в конструктор для инъекции зависимости
+    public Lion(String sex , Predator predator) throws Exception {
+        this.predator = predator;
         if ("Самец".equals(sex)) {
             hasMane = true;
         } else if ("Самка".equals(sex)) {
             hasMane = false;
         } else {
-            throw new Exception("Используйте допустимые значения пола животного - самей или самка");
+            throw new Exception("Используйте допустимые значения пола животного - самец или самка");
         }
     }
 
@@ -22,7 +24,7 @@ public class Lion {
         return feline.getKittens();
     }
 
-    public boolean doesHaveMane() {
+    public boolean isHaveMane() {
         return hasMane;
     }
 
